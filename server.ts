@@ -6,7 +6,6 @@ import FoodRouter from "./Route/Food";
 import CartRouter from "./Route/Cart";
 import cors from "cors";
 import bodyParser from "body-parser";
-import path from "path";
 dotenv.config();
 
 const app: Express = express();
