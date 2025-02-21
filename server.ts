@@ -11,19 +11,19 @@ dotenv.config();
 const app: Express = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: "*", credentials: true }));
 app.use(express.urlencoded({ extended: true }));  
 app.use(bodyParser.json());
 app.use("/User", UserRouter);
-app.use("/Food", FoodRouter,express.static("Food"));
+app.use("/Food", FoodRouter);
 app.use("/Cart", CartRouter);
-
+app.use("/uploads", express.static("uploads"));
 
 
 const port = process.env.PORT || 8000;
 
 app.get("/", (req, res) => {
-  res.send("Welcome to 👩🏻‍🍳👩🏻‍🍳👩🏻‍🍳 Backend!");
+  res.send(`Welcome to ${process.env.BASE_URL} Backend!`);
 });
 app.listen(port, () => {
   console.log(`🗄️ 🗄️ 🗄️ ─•──── on 🚪 ${port} ` + "💻");

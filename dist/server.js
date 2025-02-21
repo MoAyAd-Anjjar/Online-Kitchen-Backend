@@ -13,15 +13,16 @@ const body_parser_1 = __importDefault(require("body-parser"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({ origin: "*", credentials: true }));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(body_parser_1.default.json());
 app.use("/User", User_1.default);
-app.use("/Food", Food_1.default, express_1.default.static("Food"));
+app.use("/Food", Food_1.default);
 app.use("/Cart", Cart_1.default);
+app.use("/uploads", express_1.default.static("uploads"));
 const port = process.env.PORT || 8000;
 app.get("/", (req, res) => {
-    res.send("Welcome to 👩🏻‍🍳👩🏻‍🍳👩🏻‍🍳 Backend!");
+    res.send(`Welcome to ${process.env.BASE_URL} Backend!`);
 });
 app.listen(port, () => {
     console.log(`🗄️ 🗄️ 🗄️ ─•──── on 🚪 ${port} ` + "💻");

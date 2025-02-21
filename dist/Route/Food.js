@@ -1,68 +1,110 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const better_sqlite3_1 = __importDefault(require("better-sqlite3"));
+const express_1 = __importStar(require("express"));
 const multer_1 = __importDefault(require("multer"));
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+const better_sqlite3_1 = __importDefault(require("better-sqlite3"));
 const router = (0, express_1.Router)();
 const db = new better_sqlite3_1.default("./Kitchen.db");
+const UPLOADS_FOLDER = path_1.default.basename("../uploads/"); // Ensure correct path
+// Setup Multer for File Uploads
 const storage = multer_1.default.diskStorage({
     destination: (req, file, cb) => {
-        return cb(null, "uploads"); // Use the new name
+        cb(null, "./uploads");
     },
     filename: (req, file, cb) => {
-        return cb(null, `${Date.now()}_${file.originalname}`); // Use the new name
+        cb(null, `${Date.now()}_${file.originalname}`);
     },
 });
-const upload = (0, multer_1.default)({ storage: storage });
+const upload = (0, multer_1.default)({ storage });
+// Serve Uploaded Files
+router.use("/uploads", express_1.default.static("uploads"));
+// Upload Image Route
 router.post("/upload", upload.single("image"), (req, res) => {
     if (!req.file) {
         res.status(400).json({ error: "No file uploaded" });
         return;
     }
-    return res.json({ imageUrl: `https://online-kitchen-backend.onrender.com/uploads/${req.file.originalname}` });
+    res.json({
+        imageUrl: `${process.env.BASE_URL}/uploads/${req.file.filename}`,
+    });
 });
-// Route to Create Food
-router.post("/CreateFood", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Store Food Item in Database
+router.post("/CreateFood", (req, res) => {
     const { id, name, price, category, description, image, rate } = req.body;
-    console.log(image);
     if (!name || !image) {
         res.status(400).json({ error: "Food name and image are required" });
         return;
     }
-    const query = `INSERT INTO Foods (id, name, price, category, description, image, rate) VALUES (?,?,?,?,?,?,?)`;
     try {
-        db.prepare(query).run(id, name, price, category, description, image, rate);
-        res.status(201).json({ message: "Food was successfully inserted" });
+        db.prepare(`INSERT INTO Foods (id, name, price, category, description, image, rate) VALUES (?, ?, ?, ?, ?, ?, ?)`).run(id, name, price, category, description, image, rate);
+        res.status(201).json({ message: "Food successfully inserted!" });
     }
     catch (error) {
-        console.error("Unexpected error:", error.message);
-        res.status(500).json({ error: "An unexpected error occurred" });
+        console.error("Database error:", error.message);
+        res.status(500).json({ error: "Internal server error" });
     }
-}));
-// Route to get products by category
-router.get("/GetFoods", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const query = `SELECT * FROM Foods`;
+});
+// Fetch All Food Items
+router.get("/GetFoods", (req, res) => {
     try {
-        const Data = db.prepare(query).all();
-        res.status(200).send({ Message: "Food Retrieve successfully ", Data });
-        return;
+        // Get all food data from the database
+        const foods = db.prepare("SELECT * FROM Foods").all();
+        // Read the uploads folder to get images
+        fs_1.default.readdir(UPLOADS_FOLDER, (err, files) => {
+            if (err) {
+                console.error("Error reading upload folder:", err);
+                return res.status(500).json({ error: "Failed to retrieve images" });
+            }
+            // Map file names to full image URLs
+            const imageUrls = files.map((file) => ({
+                imageUrl: `${process.env.BASE_URL}/uploads/${file}`,
+            }));
+            // Merge foods with image URLs
+            const foodsWithImages = foods.map((food, index) => (Object.assign(Object.assign({}, food), { image: imageUrls[index] ? imageUrls[index].imageUrl : null })));
+            res.status(200).json({ message: "Foods retrieved successfully", foods: foodsWithImages });
+        });
     }
     catch (error) {
-        console.error("Unexpected error:", error.message);
-        res.status(500).send("An unexpected error occurred");
-        return;
+        console.error("Database error:", error.message);
+        res.status(500).json({ error: "Internal server error" });
     }
-}));
+});
 exports.default = router;
