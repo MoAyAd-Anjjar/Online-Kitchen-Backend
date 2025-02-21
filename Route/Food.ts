@@ -23,7 +23,7 @@ router.post("/upload", upload.single("image"), (req: Request, res: Response) => 
     return 
   }
 
-  res.json({ imageUrl: `http://localhost:3030/uploads/${req.file.originalname}` });
+  res.json({ imageUrl: `https://online-kitchen-backend.onrender.com//uploads/${req.file.originalname}` });
 });
 
 // Route to Create Food
