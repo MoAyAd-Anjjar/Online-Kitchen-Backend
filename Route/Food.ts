@@ -17,19 +17,20 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-router.post("/upload", upload.single("image"), (req: Request, res: Response) => {
+router.post("/upload", upload.single("image"), (req: Request, res: any) => {
   if (!req.file) {
     res.status(400).json({ error: "No file uploaded" });
     return 
   }
 
-  res.json({ imageUrl: `https://online-kitchen-backend.onrender.com//uploads/${req.file.originalname}` });
+  return res.json({ imageUrl: `https://online-kitchen-backend.onrender.com/uploads/${req.file.originalname}` });
 });
 
 // Route to Create Food
 router.post("/CreateFood", async (req: Request, res: Response) => {
   const { id, name, price, category, description, image, rate } = req.body;
-
+  console.log(image);
+  
   if (!name || !image) {
     res.status(400).json({ error: "Food name and image are required" });
     return;
@@ -38,7 +39,6 @@ router.post("/CreateFood", async (req: Request, res: Response) => {
   
 
   const query = `INSERT INTO Foods (id, name, price, category, description, image, rate) VALUES (?,?,?,?,?,?,?)`;
-
   try {
     db.prepare(query).run(
       id,

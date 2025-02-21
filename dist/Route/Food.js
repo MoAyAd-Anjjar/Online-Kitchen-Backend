@@ -31,11 +31,12 @@ router.post("/upload", upload.single("image"), (req, res) => {
         res.status(400).json({ error: "No file uploaded" });
         return;
     }
-    res.json({ imageUrl: `http://localhost:3030/uploads/${req.file.originalname}` });
+    return res.json({ imageUrl: `https://online-kitchen-backend.onrender.com/uploads/${req.file.originalname}` });
 });
 // Route to Create Food
 router.post("/CreateFood", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, name, price, category, description, image, rate } = req.body;
+    console.log(image);
     if (!name || !image) {
         res.status(400).json({ error: "Food name and image are required" });
         return;
