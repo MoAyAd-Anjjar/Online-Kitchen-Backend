@@ -1,0 +1,107 @@
+CREATE TABLE IF NOT EXISTS "Cart" (
+	"userid"	TEXT,
+	"username"	TEXT,
+	"userList"	TEXT
+);
+CREATE TABLE IF NOT EXISTS "Foods" (
+	"name"	TEXT,
+	"id"	INTEGER,
+	"image"	TEXT,
+	"description"	TEXT,
+	"category"	TEXT,
+	"rate"	INTEGER
+, "price"	INTEGER, "quantity"	INTEGER);
+CREATE TABLE IF NOT EXISTS "Users" (
+	"userid"	TEXT NOT NULL,
+	"username"	TEXT NOT NULL,
+	"phone"	NUMERIC,
+	"email"	TEXT,
+	"uservalidateanswer"	TEXT,
+	"favoritefood"	TEXT,
+	"password"	TEXT,
+	"role"	TEXT,
+	PRIMARY KEY("userid")
+);
+INSERT INTO "Cart" ("userid","username","userList") VALUES ('1740424486208.0','123','[{"name":"12312","id":1740423069258,"image":"http://192.168.1.113:3030/uploads/1740342773870_images.jfif","description":"1231","category":"Drink","rate":0,"price":122,"quantity":1]'),
+ ('1741867248701.0','moayad kamal','[{"name":"Burger","id":1741868046746,"image":"http://192.168.1.113:3030/uploads/1741867943860_image.jfif","description":"so nice meat","category":"Meats","rate":0,"price":11,"quantity":1}]'),
+ ('1739916079894.0','moayad anjjar','[{"name":"Burger","id":1741868046746,"image":"http://192.168.1.113:3030/uploads/1741867943860_image.jfif","description":"so nice meat","category":"Meats","rate":0,"price":11,"quantity":1},{"name":"orange jucie","id":1741868068559,"image":"http://192.168.1.113:3030/uploads/1741868048813_image.jfif","description":"so jucy and yeamy","category":"Drink","rate":0,"price":15,"quantity":1}]'),
+ ('1743249239434.0','1','[{"name":"orange jucie","id":1741868068559,"image":"http://192.168.1.113:3030/uploads/1741868048813_image.jfif","description":"so jucy and yeamy","category":"Drink","rate":0,"price":15,"quantity":10}]');
+INSERT INTO "Foods" ("name","id","image","description","category","rate","price","quantity") VALUES ('Burger',1741868046746,'http://192.168.1.113:3030/uploads/1741868048813_image.jfif','so nice meat','Meats',0,11,1),
+ ('orange jucie',1741868068559,'http://192.168.1.113:3030/uploads/1741868073749_download.jfif','so jucy and yeamy','Drink',0,15,1);
+INSERT INTO "Users" ("userid","username","phone","email","uservalidateanswer","favoritefood","password","role") VALUES ('1739916079894.0','moayad anjjar',4040,'moayad@gmail.com','amk',NULL,'b.k4KP5xwR58q2PeuyRJHZH5vHJdKUZrD2S5UJS7fNrfRoYe','Admin'),
+ ('1740424400658.0','moayad123',123,'moayad@gamil.com','king james',NULL,'b$/AWOY2gWHABbOwoEvUvV0O4bnS.4QImJm2jKn.Kuqyvfu0RPrMRA.','user'),
+ ('1740424486208.0','123',123,'moayad@gmail.com','123',NULL,'b/jEbfkPE5FlBETGM3LS6Nio7B8zqlNm','user'),
+ ('1741867248701.0','moayad kamal','sd123','kamal@123','123123',NULL,'b.Su','user'),
+ ('1743249239434.0','1',1,'1@1','1',NULL,'b/BrT6tPH4p4uS4.ZtBT8K65Gp0Ev8iw63bqlR5X0PWnS66','user');
+COMMIT;}CREATE TABLE IF NOT EXISTS "Cart" (
+	"userid"	TEXT,
+	"username"	TEXT,
+	"userList"	TEXT
+);
+CREATE TABLE IF NOT EXISTS "Foods" (
+	"name"	TEXT,
+	"id"	INTEGER,
+	"image"	TEXT,
+	"description"	TEXT,
+	"category"	TEXT,
+	"rate"	INTEGER
+, "price"	INTEGER, "quantity"	INTEGER);
+CREATE TABLE IF NOT EXISTS "Users" (
+	"userid"	TEXT NOT NULL,
+	"username"	TEXT NOT NULL,
+	"phone"	NUMERIC,
+	"email"	TEXT,
+	"uservalidateanswer"	TEXT,
+	"favoritefood"	TEXT,
+	"password"	TEXT,
+	"role"	TEXT,
+	PRIMARY KEY("userid")
+);
+INSERT INTO "Cart" ("userid","username","userList") VALUES ('1740424486208.0','123','[{"name":"12312","id":1740423069258,"image":"http://192.168.1.113:3030/uploads/1740342773870_images.jfif","description":"1231","category":"Drink","rate":0,"price":122,"quantity":1}]'),
+ ('1741867248701.0','moayad kamal','[{"name":"Burger","id":1741868046746,"image":"http://192.168.1.113:3030/uploads/1741867943860_image.jfif","description":"so nice meat","category":"Meats","rate":0,"price":11,"quantity":1}]'),
+ ('1739916079894.0','moayad anjjar','[{"name":"Burger","id":1741868046746,"image":"http://192.168.1.113:3030/uploads/1741867943860_image.jfif","description":"so nice meat","category":"Meats","rate":0,"price":11,"quantity":1},{"name":"orange jucie","id":1741868068559,"image":"http://192.168.1.113:3030/uploads/1741868048813_image.jfif","description":"so jucy and yeamy","category":"Drink","rate":0,"price":15,"quantity":1}]'),
+ ('1743249239434.0','1','[{"name":"orange jucie","id":1741868068559,"image":"http://192.168.1.113:3030/uploads/1741868048813_image.jfif","description":"so jucy and yeamy","category":"Drink","rate":0,"price":15,"quantity":10}]');
+INSERT INTO "Foods" ("name","id","image","description","category","rate","price","quantity") VALUES ('Burger',1741868046746,'http://192.168.1.113:3030/uploads/1741868048813_image.jfif','so nice meat','Meats',0,11,1),
+ ('orange jucie',1741868068559,'http://192.168.1.113:3030/uploads/1741868073749_download.jfif','so jucy and yeamy','Drink',0,15,1);
+INSERT INTO "Users" ("userid","username","phone","email","uservalidateanswer","favoritefood","password","role") VALUES ('1739916079894.0','moayad anjjar',4040,'moayad@gmail.com','amk',NULL,'$2b$10$Bkkp8w.k4KP5xwR58q2PeuyRJHZH5vHJdKUZrD2S5UJS7fNrfRoYe','Admin'),
+ ('1740424400658.0','moayad123',123,'moayad@gamil.com','king james',NULL,'$2b$10$/AWOY2gWHABbOwoEvUvV0O4bnS.4QImJm2jKn.Kuqyvfu0RPrMRA.','user'),
+ ('1740424486208.0','123',123,'moayad@gmail.com','123',NULL,'$2b$10$a0MRSHXNFU3xC7wz1KoCXu/jEbfkPE5FlBETGM3LS6Nio7B8zqlNm','user'),
+ ('1741867248701.0','moayad kamal','sd123','kamal@123','123123',NULL,'$2b$10$q5i9wJaLzNHuRj8zc73njOGBS71L7BlsG0KoFK6dO0tDqykgkQ.Su','user'),
+ ('1743249239434.0','1',1,'1@1','1',NULL,'$2b$10$p4NC19I/BrT6tPH4p4uS4.ZtBT8K65Gp0Ev8iw63bqlR5X0PWnS66','user');
+COMMIT;
+CREATE TABLE IF NOT EXISTS "Cart" (
+	"userid"	TEXT,
+	"username"	TEXT,
+	"userList"	TEXT
+);
+CREATE TABLE IF NOT EXISTS "Foods" (
+	"name"	TEXT,
+	"id"	INTEGER,
+	"image"	TEXT,
+	"description"	TEXT,
+	"category"	TEXT,
+	"rate"	INTEGER
+, "price"	INTEGER, "quantity"	INTEGER);
+CREATE TABLE IF NOT EXISTS "Users" (
+	"userid"	TEXT NOT NULL,
+	"username"	TEXT NOT NULL,
+	"phone"	NUMERIC,
+	"email"	TEXT,
+	"uservalidateanswer"	TEXT,
+	"favoritefood"	TEXT,
+	"password"	TEXT,
+	"role"	TEXT,
+	PRIMARY KEY("userid")
+);
+INSERT INTO "Cart" ("userid","username","userList") VALUES ('1740424486208.0','123','[{"name":"12312","id":1740423069258,"image":"http://192.168.1.113:3030/uploads/1740342773870_images.jfif","description":"1231","category":"Drink","rate":0,"price":122,"quantity":1]'),
+ ('1741867248701.0','moayad kamal','[{"name":"Burger","id":1741868046746,"image":"http://192.168.1.113:3030/uploads/1741867943860_image.jfif","description":"so nice meat","category":"Meats","rate":0,"price":11,"quantity":1}]'),
+ ('1739916079894.0','moayad anjjar','[{"name":"Burger","id":1741868046746,"image":"http://192.168.1.113:3030/uploads/1741867943860_image.jfif","description":"so nice meat","category":"Meats","rate":0,"price":11,"quantity":1},{"name":"orange jucie","id":1741868068559,"image":"http://192.168.1.113:3030/uploads/1741868048813_image.jfif","description":"so jucy and yeamy","category":"Drink","rate":0,"price":15,"quantity":1}]'),
+ ('1743249239434.0','1','[{"name":"orange jucie","id":1741868068559,"image":"http://192.168.1.113:3030/uploads/1741868048813_image.jfif","description":"so jucy and yeamy","category":"Drink","rate":0,"price":15,"quantity":10}]');
+INSERT INTO "Foods" ("name","id","image","description","category","rate","price","quantity") VALUES ('Burger',1741868046746,'http://192.168.1.113:3030/uploads/1741868048813_image.jfif','so nice meat','Meats',0,11,1),
+ ('orange jucie',1741868068559,'http://192.168.1.113:3030/uploads/1741868073749_download.jfif','so jucy and yeamy','Drink',0,15,1);
+INSERT INTO "Users" ("userid","username","phone","email","uservalidateanswer","favoritefood","password","role") VALUES ('1739916079894.0','moayad anjjar',4040,'moayad@gmail.com','amk',NULL,'b.k4KP5xwR58q2PeuyRJHZH5vHJdKUZrD2S5UJS7fNrfRoYe','Admin'),
+ ('1740424400658.0','moayad123',123,'moayad@gamil.com','king james',NULL,'b$/AWOY2gWHABbOwoEvUvV0O4bnS.4QImJm2jKn.Kuqyvfu0RPrMRA.','user'),
+ ('1740424486208.0','123',123,'moayad@gmail.com','123',NULL,'b/jEbfkPE5FlBETGM3LS6Nio7B8zqlNm','user'),
+ ('1741867248701.0','moayad kamal','sd123','kamal@123','123123',NULL,'b.Su','user'),
+ ('1743249239434.0','1',1,'1@1','1',NULL,'b/BrT6tPH4p4uS4.ZtBT8K65Gp0Ev8iw63bqlR5X0PWnS66','user');
+COMMIT;}

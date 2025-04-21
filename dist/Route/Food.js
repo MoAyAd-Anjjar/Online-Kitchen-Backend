@@ -46,11 +46,10 @@ const db = new better_sqlite3_1.default("./Kitchen.db");
 const UPLOADS_FOLDER = path_1.default.basename("../uploads/"); // Ensure correct path
 // Setup Multer for File Uploads
 const storage = multer_1.default.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "./uploads");
-    },
+    destination: "./uploads",
     filename: (req, file, cb) => {
-        cb(null, `${Date.now()}_${file.originalname}`);
+        const foodName = req.body.FoodName || "default";
+        cb(null, `${foodName}`);
     },
 });
 const upload = (0, multer_1.default)({ storage });
@@ -64,17 +63,18 @@ router.post("/upload", upload.single("image"), (req, res) => {
     }
     res.json({
         imageUrl: `${process.env.BASE_URL}/uploads/${req.file.filename}`,
+        foodName: req.body.FoodName,
     });
 });
 // Store Food Item in Database
 router.post("/CreateFood", (req, res) => {
-    const { id, name, price, category, description, image, rate } = req.body;
+    const { id, name, price, category, description, image, rate, quantity } = req.body;
     if (!name || !image) {
         res.status(400).json({ error: "Food name and image are required" });
         return;
     }
     try {
-        db.prepare(`INSERT INTO Foods (id, name, price, category, description, image, rate) VALUES (?, ?, ?, ?, ?, ?, ?)`).run(id, name, price, category, description, image, rate);
+        db.prepare(`INSERT INTO Foods (id, name, price, category, description, image, rate,quantity) VALUES (?, ?, ?, ?, ?, ?, ?,?)`).run(id, name, price, category, description, image, rate, quantity);
         res.status(201).json({ message: "Food successfully inserted!" });
     }
     catch (error) {
@@ -97,9 +97,16 @@ router.get("/GetFoods", (req, res) => {
             const imageUrls = files.map((file) => ({
                 imageUrl: `${process.env.BASE_URL}/uploads/${file}`,
             }));
-            // Merge foods with image URLs
-            const foodsWithImages = foods.map((food, index) => (Object.assign(Object.assign({}, food), { image: imageUrls[index] ? imageUrls[index].imageUrl : null })));
-            res.status(200).json({ message: "Foods retrieved successfully", foods: foodsWithImages });
+            const foodsWithImages = foods.map((food) => {
+                const foundImage = imageUrls.find(imageObj => imageObj.imageUrl == food.image);
+                return Object.assign(Object.assign({}, food), { image: (foundImage === null || foundImage === void 0 ? void 0 : foundImage.imageUrl) || null });
+            });
+            res
+                .status(200)
+                .json({
+                message: "Foods retrieved successfully",
+                foods: foodsWithImages,
+            });
         });
     }
     catch (error) {
