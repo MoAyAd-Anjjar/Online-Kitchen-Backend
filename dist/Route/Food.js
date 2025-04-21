@@ -49,7 +49,7 @@ const storage = multer_1.default.diskStorage({
     destination: "./uploads",
     filename: (req, file, cb) => {
         const foodName = req.body.FoodName || "default";
-        cb(null, `${foodName}`);
+        cb(null, `${foodName}.png`);
     },
 });
 const upload = (0, multer_1.default)({ storage });
